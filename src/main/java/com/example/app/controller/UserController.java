@@ -6,43 +6,68 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
-@Api(tags = "User API")
+@RequestMapping("/users")
+@Api(tags = "User Management")
 public class UserController {
-    private final UserRepository userRepository;
-
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     @ApiOperation("Get all users")
-    @ApiResponses(value = {
-            @ApiResponse(code = 0, message = "Thành công")
-            ,
-            @ApiResponse(code = 500, message = "Server Error")
-            ,
-            @ApiResponse(code = 401, message = "Chưa xác thực")
-            ,
-            @ApiResponse(code = 403, message = "Truy cập bị cấm")
-            ,
-            @ApiResponse(code = 404, message = "Không tìm thấy")
-            ,
-            @ApiResponse(code = 400, message = "Tham số không hợp lệ")
-    })
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    @GetMapping("api/{id}")
+    @ApiOperation("Get a user by ID")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "User found"),
+            @ApiResponse(code = 404, message = "User not found")
+    })
+    public User getUserById(@PathVariable("id") String id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     @PostMapping
-    @ApiOperation("Create a user")
+    @ApiOperation("Create a new user")
     public User createUser(@RequestBody User user) {
         return userRepository.save(user);
     }
 
+    @PutMapping("api/update/{id}")
+    @ApiOperation("Update a user")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "User updated"),
+            @ApiResponse(code = 404, message = "User not found")
+    })
+    public User updateUser(@PathVariable("id") String id, @RequestBody User updatedUser) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.setUsername(updatedUser.getUsername());
+            user.setPassword(updatedUser.getPassword());
+            user.setEmail(updatedUser.getEmail());
+            user.setPhone(updatedUser.getPhone());
+            user.setGender(updatedUser.getGender());
+            user.setBirthday(updatedUser.getBirthday());
+            user.setDescription(updatedUser.getDescription());
+            return userRepository.save(user);
+        }
+        return null;
+    }
+
+    @DeleteMapping("api/{id}")
+    @ApiOperation("Delete a user")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "User deleted"),
+            @ApiResponse(code = 404, message = "User not found")
+    })
+    public void deleteUser(@PathVariable("id") String id) {
+        userRepository.deleteById(id);
+    }
 }
