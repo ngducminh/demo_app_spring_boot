@@ -20,18 +20,6 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-//    private final String secret_key = "mysecretkey";
-//    private long accessTokenValidity = 60*60*1000;
-//
-//    private final JwtParser jwtParser;
-//
-//    private final String TOKEN_HEADER = "Authorization";
-//    private final String TOKEN_PREFIX = "Bearer ";
-//
-//    public JwtUtil(){
-//        this.jwtParser = Jwts.parser().setSigningKey(secret_key);
-//    }
-
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userDetails.getUsername());
