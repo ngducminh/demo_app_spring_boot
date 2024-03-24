@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/web-api")
 @Api(tags = "User Management")
 public class UserController {
     @Autowired
@@ -61,7 +61,7 @@ public class UserController {
         return null;
     }
 
-    @DeleteMapping("api/{id}")
+    @DeleteMapping("api/delete/{id}")
     @ApiOperation("Delete a user")
     @ApiResponses({
             @ApiResponse(code = 204, message = "User deleted"),

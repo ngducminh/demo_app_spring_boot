@@ -61,26 +61,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/login?logout")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID");
-//                .formLogin()
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/dashboard")
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/login?logout")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID");
     }
 
     @Bean
